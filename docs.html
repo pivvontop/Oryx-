@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentazione Ufficiale | Oryx Swapper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Specific Docs Styles */
+        body {
+            overflow-y: auto;
+            cursor: default; /* Regular cursor for docs */
+        }
+        .docs-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 100px auto 40px auto;
+            padding: 0 5%;
+            gap: 40px;
+        }
+        .docs-sidebar {
+            width: 250px;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            background: rgba(108, 61, 41, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .docs-sidebar ul {
+            list-style: none;
+        }
+        .docs-sidebar li {
+            margin-bottom: 12px;
+        }
+        .docs-sidebar a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .docs-sidebar a:hover, .docs-sidebar a.active {
+            color: var(--accent-color);
+        }
+        .docs-content {
+            flex: 1;
+            background: rgba(15, 20, 30, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 50px;
+            backdrop-filter: blur(10px);
+        }
+        .docs-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        .docs-content h2 {
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .docs-content h3 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .docs-content p, .docs-content li {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .docs-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .docs-alert {
+            background: rgba(253, 241, 117, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .docs-alert p {
+            margin: 0;
+            color: #fff;
+        }
+        .docs-alert strong {
+            color: var(--accent-color);
+        }
+        .code-block {
+            background: #111810;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #c8d6ba;
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 900px) {
+            .docs-container {
+                flex-direction: column;
+            }
+            .docs-sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-bg"></div>
+
+    <nav class="navbar">
+        <div class="logo">Oryx<span>Swapper</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#features">Features</a></li>
+            <li><a href="docs.html" style="color: var(--text-primary); font-weight: 700;">Documentazione</a></li>
+            <li><a href="https://discord.gg/qmM2FhSGq7" target="_blank">Discord Server</a></li>
+        </ul>
+        <a href="index.html#download" class="btn btn-outline nav-btn">Scarica Ora</a>
+    </nav>
+
+    <div class="docs-container">
+        <aside class="docs-sidebar">
+            <h3>Indice</h3>
+            <br>
+            <ul>
+                <li><a href="#introduzione">1. Introduzione</a></li>
+                <li><a href="#come-funziona">2. Come funziona lo Swap</a></li>
+                <li><a href="#multi-variant">3. Il Motore Multi-Variant</a></li>
+                <li><a href="#revert">4. L'importanza del Revert</a></li>
+                <li><a href="#sicurezza">5. Sicurezza e Ban</a></li>
+                <li><a href="#troubleshooting">6. Risoluzione Problemi</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>Documentazione Ufficiale</h1>
+            <p>Benvenuto nella documentazione di Oryx Swapper. Qui troverai tutte le informazioni tecniche e pratiche per sfruttare al 100% il nostro client-side modifier per Rocket League.</p>
+
+            <section id="introduzione">
+                <h2>1. Introduzione</h2>
+                <p>Oryx Swapper è uno strumento sviluppato per manipolare in memoria locale i pacchetti grafici (Unreal Packages, estensione <code>.upk</code>) di Rocket League. Non utilizza iniezioni in RAM né software di cheat; si limita a sostituire le geometrie 3D e le texture del gioco scambiando dinamicamente i nomi all'interno dei file originali crittografati.</p>
+                <div class="docs-alert">
+                    <p><strong>Nota tecnica:</strong> Il sistema sfrutta uno script backend Python che decripta la firma originale del file usando AES, effettua una sostituzione offset-aware nella Name Table del motore Unreal Engine 3, e ricripta il pacchetto mantenendo intatta la validazione di Epic Games.</p>
+                </div>
+            </section>
+
+            <section id="come-funziona">
+                <h2>2. Come funziona lo Swap</h2>
+                <p>L'interfaccia utente è progettata per essere intuitiva. Per eseguire uno swap:</p>
+                <ul>
+                    <li><strong>Seleziona il Filtro:</strong> Scegli la categoria (Body, Boost, Decal, ecc.).</li>
+                    <li><strong>Seleziona il bersaglio (Target):</strong> Questo è l'oggetto che <em>possiedi già</em> nel tuo inventario e che vuoi sacrificare visivamente.</li>
+                    <li><strong>Seleziona il donatore (Donor):</strong> Questo è l'oggetto che <em>vuoi visualizzare</em> in game (es. Alpha Boost, Fast 4WD).</li>
+                    <li><strong>Clicca Swap:</strong> L'applicazione copierà i dati visivi del donatore e li applicherà al file del bersaglio.</li>
+                </ul>
+            </section>
+
+            <section id="multi-variant">
+                <h2>3. Il Motore Multi-Variant</h2>
+                <p>A differenza dei vecchi swapper che si limitavano a modificare il file base (es. <code>Boost_Standard_SF.upk</code>), il motore v1.0.0 di Oryx è dotato di un algoritmo di "Smart Discovery".</p>
+                <p>Quando decidi di swappare un oggetto, l'algoritmo analizza la cartella <code>CookedPCConsole</code> alla ricerca di <strong>tutte le possibili varianti</strong> legate a quell'oggetto. Ad esempio, il "Boost Standard" possiede diverse varianti di colore (Blu, Verde, Rosa, Giallo) e varianti di texture (pacchetti <code>_T_SF</code>).</p>
+                <p>Il motore modifica simultaneamente fino a decine di file per garantire che, indipendentemente dal team in cui ti trovi (Arancio o Blu), l'oggetto venga caricato senza crash e con le texture corrette.</p>
+            </section>
+
+            <section id="revert">
+                <h2>4. L'importanza del Revert (Ripristino)</h2>
+                <p>L'applicazione effettua sempre un backup invisibile dei tuoi file originali prima di applicare una modifica. Se desideri cambiare swap, o se il gioco si aggiorna, <strong>devi assolutamente usare il tasto Revert</strong>.</p>
+                <div class="docs-alert">
+                    <p><strong>⚠️ Regola d'oro:</strong> Se un oggetto risulta già swappato (confermi dalla presenza del pulsante rosso "Revert"), <strong>non puoi swapparlo direttamente in un'altra cosa</strong>. Devi prima cliccare su Revert per riportare i file allo stato vergine, e solo dopo procedere al nuovo swap.</p>
+                </div>
+            </section>
+
+            <section id="sicurezza">
+                <h2>5. Sicurezza e Ban</h2>
+                <p>Oryx Swapper opera al 100% in modalità <strong>Client-Side</strong>. Questo significa che i file vengono modificati unicamente sull'hard disk del tuo PC. I server di Rocket League non eseguono controlli di integrità asincroni sulle mesh grafiche per questioni di performance.</p>
+                <p>Risultato? Il rischio di ban è <strong>inesistente</strong>. Tuttavia, tieni presente che gli altri giocatori online non vedranno le tue modifiche, ma continueranno a vedere l'oggetto originale che hai equipaggiato.</p>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>6. Risoluzione Problemi</h2>
+                <h3>Il gioco non si avvia / "File Corrotto"</h3>
+                <p>Se dopo uno swap il gioco si rifiuta di partire mostrando un errore di verifica di Epic Games:</p>
+                <ul>
+                    <li>Apri l'app e clicca "Revert" su tutti gli oggetti che hai swappato.</li>
+                    <li>Se il problema persiste, vai sul Launcher di Epic Games -> Libreria -> Rocket League -> Gestisci -> <strong>Verifica File</strong>. Questo ripristinerà tutti i file allo stato originale forzatamente.</li>
+                </ul>
+                
+                <h3>I colori sono sbagliati (es. la macchina è tutta nera)</h3>
+                <p>Questo accade di solito con alcune Decals o se non hai ripristinato un precedente swap. Effettua un Revert della macchina e della Decal, avvia il gioco senza swap per assicurarti che tutto sia normale, e poi procedi nuovamente allo swap desiderato con l'app.</p>
+            </section>
+
+        </main>
+    </div>
+
+    <footer style="margin-top: 0; position: relative;">
+        <div class="footer-logo">Oryx<span>Swapper</span></div>
+        <p>Creato da <strong>Oryx</strong>. Non affiliato con Psyonix o Epic Games.</p>
+    </footer>
+
+</body>
+</html>

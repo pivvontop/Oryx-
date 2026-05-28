@@ -1,217 +1,288 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentazione Ufficiale | Oryx Swapper</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Documentation | Oryx Swapper</title>
     <style>
-        /* Specific Docs Styles */
-        body {
-            overflow-y: auto;
-            cursor: default; /* Regular cursor for docs */
+        :root {
+            --bg: #000000;
+            --surface: #0a0a0a;
+            --border: #222;
+            --text: #ededed;
+            --muted: #888;
+            --accent: #fff;
+            --error: #ff453a;
         }
-        .docs-container {
-            display: flex;
-            max-width: 1400px;
-            margin: 100px auto 40px auto;
-            padding: 0 5%;
-            gap: 40px;
-        }
-        .docs-sidebar {
-            width: 250px;
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-            background: rgba(108, 61, 41, 0.2);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-        }
-        .docs-sidebar ul {
-            list-style: none;
-        }
-        .docs-sidebar li {
-            margin-bottom: 12px;
-        }
-        .docs-sidebar a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .docs-sidebar a:hover, .docs-sidebar a.active {
-            color: var(--accent-color);
-        }
-        .docs-content {
-            flex: 1;
-            background: rgba(15, 20, 30, 0.4);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 50px;
-            backdrop-filter: blur(10px);
-        }
-        .docs-content h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--accent-color);
-        }
-        .docs-content h2 {
-            font-size: 2rem;
-            margin-top: 50px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .docs-content h3 {
-            font-size: 1.4rem;
-            margin-top: 30px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-        .docs-content p, .docs-content li {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            line-height: 1.8;
-            margin-bottom: 15px;
-        }
-        .docs-content ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
-        }
-        .docs-alert {
-            background: rgba(253, 241, 117, 0.1);
-            border-left: 4px solid var(--accent-color);
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 0 8px 8px 0;
-        }
-        .docs-alert p {
-            margin: 0;
-            color: #fff;
-        }
-        .docs-alert strong {
-            color: var(--accent-color);
-        }
-        .code-block {
-            background: #111810;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: monospace;
-            color: #c8d6ba;
-            border: 1px solid rgba(255,255,255,0.05);
-            overflow-x: auto;
-            margin-bottom: 20px;
-        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+        body { background: var(--bg); color: var(--text); line-height: 1.7; display: flex; }
+        html { scroll-behavior: smooth; }
+
+        /* Navbar Semplice */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--border); z-index: 100; backdrop-filter: blur(10px); }
+        nav a { color: var(--text); text-decoration: none; font-weight: 600; font-size: 16px; letter-spacing: -0.5px;}
+
+        /* Struttura Pagina Documentazione */
+        .docs-container { display: flex; max-width: 1400px; margin: 60px auto 0; width: 100%; }
+
+        /* Sidebar Navigazione */
+        aside { width: 280px; padding: 40px 30px; height: calc(100vh - 60px); position: sticky; top: 60px; border-right: 1px solid var(--border); overflow-y: auto; }
+        aside h4 { color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; margin-top: 30px; opacity: 0.6; }
+        aside h4:first-child { margin-top: 0; }
+        aside ul { list-style: none; }
+        aside li { margin-bottom: 10px; }
+        aside a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; display: block; padding: 5px 0; }
+        aside a:hover { color: var(--accent); }
+
+        /* Main Content */
+        main { flex: 1; padding: 60px 80px; max-width: 900px; }
+        
+        h1 { font-size: 40px; letter-spacing: -1px; margin-bottom: 20px; font-weight: 600; }
+        h2 { font-size: 28px; margin-top: 60px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); font-weight: 600; }
+        h3 { font-size: 20px; margin-top: 40px; margin-bottom: 15px; color: var(--accent); font-weight: 500; }
+        p { color: var(--muted); margin-bottom: 20px; font-size: 16px; }
+        
+        /* Code Blocks & Callouts */
+        .callout { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .callout p { margin: 0; color: var(--text); font-size: 15px; }
+        code { font-family: monospace; background: #111; padding: 2px 6px; border-radius: 4px; color: var(--accent); }
+        
+        .error-card { background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); border-left: 3px solid var(--error); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .error-card h4 { color: var(--error); margin-bottom: 8px; font-size: 16px; }
+        .error-card p { margin: 0; font-size: 14px; }
+
+        /* Liste */
+        strong { color: var(--text); }
+
+        /* Responsive */
         @media (max-width: 900px) {
-            .docs-container {
-                flex-direction: column;
-            }
-            .docs-sidebar {
-                width: 100%;
-                position: relative;
-                top: 0;
-            }
+            .docs-container { flex-direction: column; }
+            aside { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+            main { padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="glow-bg"></div>
 
-    <nav class="navbar">
-        <div class="logo">Oryx<span>Swapper</span></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="index.html#features">Features</a></li>
-            <li><a href="docs.html" style="color: var(--text-primary); font-weight: 700;">Documentazione</a></li>
-            <li><a href="https://discord.gg/qmM2FhSGq7" target="_blank">Discord Server</a></li>
-        </ul>
-        <a href="index.html#download" class="btn btn-outline nav-btn">Scarica Ora</a>
+    <nav>
+        <a href="index.html">&larr; Back to Home</a>
     </nav>
 
     <div class="docs-container">
-        <aside class="docs-sidebar">
-            <h3>Indice</h3>
-            <br>
+        <!-- Sidebar Navigation -->
+        <aside>
+            <h4>Getting Started</h4>
             <ul>
-                <li><a href="#introduzione">1. Introduzione</a></li>
-                <li><a href="#come-funziona">2. Come funziona lo Swap</a></li>
-                <li><a href="#multi-variant">3. Il Motore Multi-Variant</a></li>
-                <li><a href="#revert">4. L'importanza del Revert</a></li>
-                <li><a href="#sicurezza">5. Sicurezza e Ban</a></li>
-                <li><a href="#troubleshooting">6. Risoluzione Problemi</a></li>
+                <li><a href="#installation">Installation Guide</a></li>
+            </ul>
+
+            <h4>Troubleshooting</h4>
+            <ul>
+                <li><a href="#issues">Known Issues & Fixes</a></li>
+            </ul>
+
+            <h4>Information</h4>
+            <ul>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#safety">Safety Info</a></li>
             </ul>
         </aside>
 
-        <main class="docs-content">
-            <h1>Documentazione Ufficiale</h1>
-            <p>Benvenuto nella documentazione di Oryx Swapper. Qui troverai tutte le informazioni tecniche e pratiche per sfruttare al 100% il nostro client-side modifier per Rocket League.</p>
+        <!-- Main Content -->
+        <main>
+            <h1>Oryx Documentation</h1>
+            <p>Welcome to the official Oryx Swapper documentation. Here you will find everything you need regarding installation, configuration, and technical troubleshooting.</p>
 
-            <section id="introduzione">
-                <h2>1. Introduzione</h2>
-                <p>Oryx Swapper è uno strumento sviluppato per manipolare in memoria locale i pacchetti grafici (Unreal Packages, estensione <code>.upk</code>) di Rocket League. Non utilizza iniezioni in RAM né software di cheat; si limita a sostituire le geometrie 3D e le texture del gioco scambiando dinamicamente i nomi all'interno dei file originali crittografati.</p>
-                <div class="docs-alert">
-                    <p><strong>Nota tecnica:</strong> Il sistema sfrutta uno script backend Python che decripta la firma originale del file usando AES, effettua una sostituzione offset-aware nella Name Table del motore Unreal Engine 3, e ricripta il pacchetto mantenendo intatta la validazione di Epic Games.</p>
-                </div>
-            </section>
-
-            <section id="come-funziona">
-                <h2>2. Come funziona lo Swap</h2>
-                <p>L'interfaccia utente è progettata per essere intuitiva. Per eseguire uno swap:</p>
-                <ul>
-                    <li><strong>Seleziona il Filtro:</strong> Scegli la categoria (Body, Boost, Decal, ecc.).</li>
-                    <li><strong>Seleziona il bersaglio (Target):</strong> Questo è l'oggetto che <em>possiedi già</em> nel tuo inventario e che vuoi sacrificare visivamente.</li>
-                    <li><strong>Seleziona il donatore (Donor):</strong> Questo è l'oggetto che <em>vuoi visualizzare</em> in game (es. Alpha Boost, Fast 4WD).</li>
-                    <li><strong>Clicca Swap:</strong> L'applicazione copierà i dati visivi del donatore e li applicherà al file del bersaglio.</li>
-                </ul>
-            </section>
-
-            <section id="multi-variant">
-                <h2>3. Il Motore Multi-Variant</h2>
-                <p>A differenza dei vecchi swapper che si limitavano a modificare il file base (es. <code>Boost_Standard_SF.upk</code>), il motore v1.0.0 di Oryx è dotato di un algoritmo di "Smart Discovery".</p>
-                <p>Quando decidi di swappare un oggetto, l'algoritmo analizza la cartella <code>CookedPCConsole</code> alla ricerca di <strong>tutte le possibili varianti</strong> legate a quell'oggetto. Ad esempio, il "Boost Standard" possiede diverse varianti di colore (Blu, Verde, Rosa, Giallo) e varianti di texture (pacchetti <code>_T_SF</code>).</p>
-                <p>Il motore modifica simultaneamente fino a decine di file per garantire che, indipendentemente dal team in cui ti trovi (Arancio o Blu), l'oggetto venga caricato senza crash e con le texture corrette.</p>
-            </section>
-
-            <section id="revert">
-                <h2>4. L'importanza del Revert (Ripristino)</h2>
-                <p>L'applicazione effettua sempre un backup invisibile dei tuoi file originali prima di applicare una modifica. Se desideri cambiare swap, o se il gioco si aggiorna, <strong>devi assolutamente usare il tasto Revert</strong>.</p>
-                <div class="docs-alert">
-                    <p><strong>⚠️ Regola d'oro:</strong> Se un oggetto risulta già swappato (confermi dalla presenza del pulsante rosso "Revert"), <strong>non puoi swapparlo direttamente in un'altra cosa</strong>. Devi prima cliccare su Revert per riportare i file allo stato vergine, e solo dopo procedere al nuovo swap.</p>
-                </div>
-            </section>
-
-            <section id="sicurezza">
-                <h2>5. Sicurezza e Ban</h2>
-                <p>Oryx Swapper opera al 100% in modalità <strong>Client-Side</strong>. Questo significa che i file vengono modificati unicamente sull'hard disk del tuo PC. I server di Rocket League non eseguono controlli di integrità asincroni sulle mesh grafiche per questioni di performance.</p>
-                <p>Risultato? Il rischio di ban è <strong>inesistente</strong>. Tuttavia, tieni presente che gli altri giocatori online non vedranno le tue modifiche, ma continueranno a vedere l'oggetto originale che hai equipaggiato.</p>
-            </section>
-
-            <section id="troubleshooting">
-                <h2>6. Risoluzione Problemi</h2>
-                <h3>Il gioco non si avvia / "File Corrotto"</h3>
-                <p>Se dopo uno swap il gioco si rifiuta di partire mostrando un errore di verifica di Epic Games:</p>
-                <ul>
-                    <li>Apri l'app e clicca "Revert" su tutti gli oggetti che hai swappato.</li>
-                    <li>Se il problema persiste, vai sul Launcher di Epic Games -> Libreria -> Rocket League -> Gestisci -> <strong>Verifica File</strong>. Questo ripristinerà tutti i file allo stato originale forzatamente.</li>
-                </ul>
+            <section id="installation">
+                <h2>Installation Guide</h2>
                 
-                <h3>I colori sono sbagliati (es. la macchina è tutta nera)</h3>
-                <p>Questo accade di solito con alcune Decals o se non hai ripristinato un precedente swap. Effettua un Revert della macchina e della Decal, avvia il gioco senza swap per assicurarti che tutto sia normale, e poi procedi nuovamente allo swap desiderato con l'app.</p>
+                <h3>Download Oryx Swapper</h3>
+                <p>Download the latest setup file only from the official Discord server.<br>
+                Do not use reuploaded files, modified versions, or links sent by unknown users.</p>
+
+                <h3>Run The Setup</h3>
+                <p>Open the Oryx Swapper setup file and follow the installation steps.<br>
+                If Windows asks for permission, allow it. Oryx needs permission to access and modify local Rocket League files.</p>
+
+                <h3>Launch The App</h3>
+                <p>After installation, open Oryx Swapper from the desktop shortcut or Start Menu.<br>
+                The app may ask for administrator permission when launching. This is normal.</p>
+
+                <h3>Set Your Rocket League Folder</h3>
+                <p>Go to Settings and check the Rocket League folder section.<br>
+                If the folder is detected automatically, you can continue.<br>
+                If it is not detected, click Find Automatically or use Browse to select the correct folder manually.</p>
+
+                <div class="callout">
+                    <p>The correct folder should usually look like this:<br>
+                    <code>C:\Program Files\Epic Games\rocketleague\TAGame\CookedPCConsole</code></p>
+                </div>
+            </section>
+
+            <section id="issues">
+                <h2>Known Issues & Fixes</h2>
+                
+                <div class="callout">
+                    <p><strong>Before Reporting:</strong> Use the latest Oryx version, close Rocket League, run Oryx as administrator, and check the game folder in Settings.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Windows SmartScreen Warning</h4>
+                    <p>Windows may warn you because Oryx is not code-signed yet.<br>
+                    <strong>Fix:</strong> Click More info, then Run anyway, only if downloaded from the official server.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Oryx Does Not Open</h4>
+                    <p>Usually caused by antivirus or Windows blocking it.<br>
+                    <strong>Fix:</strong> Run as administrator, check antivirus quarantine, or reinstall the latest setup.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Rocket League Folder Not Found</h4>
+                    <p>Oryx cannot detect your game folder.<br>
+                    <strong>Fix:</strong> Settings &rarr; Find Automatically, or Browse and select <code>CookedPCConsole</code>.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Wrong Game Folder Selected</h4>
+                    <p>Swaps will not work with the wrong folder.<br>
+                    <strong>Fix:</strong> Select <code>Rocket League\TAGame\CookedPCConsole</code>.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Cannot Create Backup</h4>
+                    <p>Oryx does not have permission to write in the Rocket League folder.<br>
+                    <strong>Fix:</strong> Close Rocket League, run Oryx as administrator, then try again.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Source / Target UPK Not Found</h4>
+                    <p>A required game file is missing.<br>
+                    <strong>Fix:</strong> Verify Rocket League files from Epic Games or Steam.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Swap Applied But Nothing Changes</h4>
+                    <p>The original item is probably not equipped.<br>
+                    <strong>Fix:</strong> Equip the item you own in Rocket League, then apply the swap again.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Rocket League Crashes After A Swap</h4>
+                    <p>The item may be incompatible or outdated after a game update.<br>
+                    <strong>Fix:</strong> Use Revert, restart Rocket League, and try another swap.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Revert Does Not Work</h4>
+                    <p>Backup may be missing or Oryx lacks permission.<br>
+                    <strong>Fix:</strong> Run as administrator. If it still fails, verify Rocket League files.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Image Not Available</h4>
+                    <p>Oryx has no thumbnail for that item.<br>
+                    <strong>Fix:</strong> No action needed. It does not affect the swap.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>Custom Ball / Decal Does Not Work</h4>
+                    <p>The ZIP may be unsupported or imported incorrectly.<br>
+                    <strong>Fix:</strong> Import the original ZIP directly in Oryx. Do not extract it manually.</p>
+                </div>
+
+                <div class="error-card">
+                    <h4>After A Rocket League Update</h4>
+                    <p>Some swaps may stop working after game updates.<br>
+                    <strong>Fix:</strong> Revert swaps, verify game files, and wait for an Oryx update if needed.</p>
+                </div>
+
+                <div class="callout">
+                    <p><strong>Still Need Help?</strong><br>
+                    Open a support ticket with your Oryx version, item swapped, exact error, and whether Rocket League was open or closed.</p>
+                </div>
+            </section>
+
+            <section id="faq">
+                <h2>FAQ</h2>
+                
+                <h3>What is Oryx Swapper?</h3>
+                <p>Oryx Swapper is a local cosmetic swapper for Rocket League. It changes how selected items appear on your PC by replacing compatible local game files. It does not give you items, unlock paid content, or modify your Rocket League account.</p>
+
+                <h3>Do I need to own the item?</h3>
+                <p>Yes. You must own and equip the original item in Rocket League. Oryx only changes how that item appears locally on your PC.</p>
+
+                <h3>What is the correct swap order?</h3>
+                <p>Choose the item you own first, then choose what you want it to display as.<br>
+                <strong>Example:</strong> Standard Boost &rarr; Display as Alpha Boost.</p>
+
+                <h3>Can other players see my swapped items?</h3>
+                <p>In most cases, no. Swaps are local and visual, meaning they are mainly visible on your own PC.</p>
+
+                <h3>Should Rocket League be open while applying swaps?</h3>
+                <p>No. Always close Rocket League before applying, removing, or reverting swaps. After the swap is finished, launch the game again.</p>
+
+                <h3>Why did my swap not appear in-game?</h3>
+                <p>Make sure you equipped the original item in Rocket League first. If you swapped Standard Boost to Alpha Boost, Standard Boost must be equipped in-game.</p>
+
+                <h3>What should I do if Rocket League crashes?</h3>
+                <p>Use Revert in Oryx first. Then launch Rocket League again. If the issue continues, open a support ticket and include the item you swapped, what you displayed it as, and your latest crash log if possible.</p>
+
+                <h3>Are all items supported?</h3>
+                <p>No. Oryx may not work perfectly with every item. Some items can behave differently, appear incorrectly, or require extra support. If an item does not work, revert it before trying another swap.</p>
+
+                <h3>How do custom balls and custom decals work?</h3>
+                <p>Custom balls and decals use supported ZIP packs. Import the ZIP directly inside Oryx, apply it, then launch Rocket League. Do not extract the ZIP unless staff tells you to.</p>
+
+                <h3>Does Oryx create backups?</h3>
+                <p>Yes. Oryx creates backups before changing game files. This allows you to restore the original files if something goes wrong.</p>
+
+                <h3>What happens after a Rocket League update?</h3>
+                <p>Game updates can change local files. Some swaps may stop working after an update. If this happens, revert your swaps and wait for an Oryx update or staff instructions.</p>
+
+                <h3>Why does Windows show a warning?</h3>
+                <p>Windows may show a SmartScreen warning because Oryx is not code-signed yet. Only download Oryx from the official server and never trust reuploaded versions.</p>
+
+                <h3>Where can I get support?</h3>
+                <p>Open a support ticket and explain the issue clearly. Include what you tried, what item you swapped, and whether Rocket League was open or closed.</p>
+            </section>
+
+            <section id="safety">
+                <h2>Safety Info</h2>
+                
+                <h3>Download Source</h3>
+                <p>Only download Oryx from the official Discord server.<br>
+                Do not trust reuploads, modified versions, or files sent by unknown users.</p>
+
+                <h3>Administrator Permission</h3>
+                <p>Oryx may ask for administrator permission because Rocket League is usually installed inside <code>Program Files</code>.<br>
+                This permission is needed to create backups and replace local game files.</p>
+
+                <h3>Local Changes Only</h3>
+                <p>Oryx only modifies local Rocket League files on your PC.<br>
+                It does not edit your Rocket League account, does not unlock items, and does not communicate with Rocket League servers.</p>
+
+                <h3>Backups</h3>
+                <p>Oryx creates backups before changing game files.<br>
+                If something goes wrong, use Revert before trying another swap.</p>
+
+                <h3>Rocket League Updates</h3>
+                <p>Game updates can replace or change files used by swaps.<br>
+                After an update, revert your swaps and wait for instructions if something stops working.</p>
+
+                <h3>SmartScreen / Antivirus</h3>
+                <p>Windows or antivirus software may warn you because Oryx is not code-signed yet.<br>
+                Only allow the app if it was downloaded from the official server.</p>
+
+                <h3>Use Carefully</h3>
+                <p>Close Rocket League before applying, removing, or reverting swaps.<br>
+                Never delete backup folders unless staff tells you to.</p>
             </section>
 
         </main>
     </div>
-
-    <footer style="margin-top: 0; position: relative;">
-        <div class="footer-logo">Oryx<span>Swapper</span></div>
-        <p>Creato da <strong>Oryx</strong>. Non affiliato con Psyonix o Epic Games.</p>
-    </footer>
 
 </body>
 </html>

@@ -3,196 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oryx Swapper | The Ultimate Experience</title>
-    <meta name="description" content="Unlock the garage of your dreams with Oryx Swapper.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Oryx Swapper | The Ultimate Item Swapper</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --surface: #0a0a0a;
+            --surface-hover: #121212;
+            --border: #222;
+            --border-hover: #333;
+            --text: #ededed;
+            --muted: #888;
+            --accent: #fff;
+            --accent-bg: #000;
+            --discord: #5865F2;
+            --discord-hover: #4752C4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        
+        body { background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+        /* Smooth Scroll & Animations */
+        html { scroll-behavior: smooth; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+
+        /* Navbar */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 5vw; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); z-index: 100;
+        }
+        .logo { font-weight: 600; color: var(--text); text-decoration: none; font-size: 18px; letter-spacing: -0.5px; }
+        .nav-links a { color: var(--muted); text-decoration: none; margin-left: 30px; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--text); }
+
+        /* Typography */
+        .text-gradient { 
+            background: linear-gradient(180deg, #fff 0%, #777 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            padding-bottom: 0.1em;
+            display: inline-block;
+        }
+        .tag { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 16px; display: block; font-weight: 600; }
+        h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 600; letter-spacing: -1.5px; margin-bottom: 20px; line-height: 1.2; }
+        .section-desc { font-size: 18px; color: var(--muted); max-width: 600px; margin-bottom: 60px; }
+
+        /* LIVE STATUS PILL */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 32px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .status-pill:hover { background: rgba(255, 255, 255, 0.08); border-color: #444; transform: translateY(-1px); }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #23a559;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(35, 165, 89, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(35, 165, 89, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(35, 165, 89, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(35, 165, 89, 0); }
+        }
+        .status-version { color: var(--muted); margin-left: 4px; font-size: 12px; }
+
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 140px 20px 80px; }
+        .hero h1 { font-size: clamp(48px, 8vw, 96px); font-weight: 700; letter-spacing: -3px; line-height: 1.15; margin-bottom: 24px; }
+        .hero p { font-size: 20px; color: var(--muted); max-width: 600px; margin-bottom: 40px; }
+        
+        /* Buttons */
+        .btn-primary { padding: 14px 32px; background: var(--accent); color: var(--accent-bg); border-radius: 100px; font-weight: 600; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; display: inline-block; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.2); }
+        .btn-secondary { padding: 14px 32px; border: 1px solid var(--border); color: var(--text); border-radius: 100px; font-weight: 500; text-decoration: none; margin-left: 15px; transition: background 0.2s, border-color 0.2s; display: inline-block; }
+        .btn-secondary:hover { background: var(--surface); border-color: var(--border-hover); }
+
+        /* Video Showcase Native */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 60px auto 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            aspect-ratio: 16 / 9;
+            background: var(--surface);
+        }
+        .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+        /* Layout & Constraints */
+        section { padding: 120px 5vw; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid var(--border); }
+        section:last-of-type { border-bottom: none; }
+        
+        /* Grids & Cards */
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .bento-asym { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        @media (max-width: 900px) { .bento-asym { grid-template-columns: 1fr; } }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 48px 32px; transition: all 0.4s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { border-color: var(--border-hover); background: var(--surface-hover); transform: translateY(-3px); }
+        .card h3 { font-size: 24px; margin-bottom: 12px; font-weight: 600; letter-spacing: -0.5px; }
+        .card p { color: var(--muted); font-size: 16px; line-height: 1.6; }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 60px; }
+        .stat-item { padding: 40px 0; border-top: 1px solid var(--border); }
+        .stat-item h4 { font-size: 56px; font-weight: 600; letter-spacing: -2px; color: var(--text); margin-bottom: 8px; line-height: 1; }
+        .stat-item p { color: var(--muted); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+
+        /* FAQ Section */
+        .faq-item { border-bottom: 1px solid var(--border); padding: 24px 0; }
+        .faq-item h4 { font-size: 18px; font-weight: 500; margin-bottom: 12px; }
+        .faq-item p { color: var(--muted); font-size: 15px; }
+
+        /* CHANGELOG TIMELINE */
+        .changelog-box { border-left: 2px solid var(--border); padding-left: 32px; margin-top: 40px; margin-left: 8px;}
+        .changelog-item { position: relative; margin-bottom: 40px; }
+        .changelog-item:last-child { margin-bottom: 0; }
+        .changelog-item::before { content: ''; position: absolute; left: -39px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--text); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--border); }
+        .changelog-version { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+        .changelog-date { font-size: 14px; color: var(--muted); font-weight: 400; }
+        .changelog-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 100px; color: var(--accent); font-weight: 600; }
+        .changelog-list { list-style: none; color: var(--muted); font-size: 15px; line-height: 1.7; margin-top: 8px; }
+        .changelog-list li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+        .changelog-list li::before { content: '→'; position: absolute; left: 0; color: #555; font-size: 14px; }
+
+        /* Cookie Banner */
+        .cookie-banner { position: fixed; bottom: 24px; left: 24px; max-width: 380px; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 16px; padding: 24px; z-index: 9999; box-shadow: 0 20px 40px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 16px; transition: opacity 0.4s ease, transform 0.4s ease; }
+        .cookie-banner.hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
+        .cookie-text p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+        .cookie-text strong { color: var(--text); font-weight: 600; font-size: 14px; }
+        .cookie-buttons { display: flex; gap: 12px; }
+        .btn-cookie { flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .btn-cookie-accept { background: var(--text); color: var(--bg); border: none; }
+        .btn-cookie-accept:hover { background: #fff; transform: translateY(-1px); }
+        .btn-cookie-reject { background: transparent; color: var(--text); border: 1px solid var(--border); }
+        .btn-cookie-reject:hover { background: var(--surface-hover); }
+
+        footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; max-width: 1200px; margin: 0 auto; align-items: center;}
+        @media (max-width: 600px) { footer { flex-direction: column; gap: 20px; } }
+
+        /* DISCORD FLOATING BUTTON E POPUP */
+        .discord-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            background: var(--discord);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s;
+        }
+        .discord-fab:hover { transform: scale(1.1); background: var(--discord-hover); }
+        .discord-fab svg { width: 34px; height: 34px; }
+
+        .discord-popup {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            width: 320px;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            z-index: 999;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transform-origin: bottom right;
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .discord-popup.active { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+        .discord-popup-close { position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: var(--muted); font-size: 16px; cursor: pointer; transition: color 0.2s; }
+        .discord-popup-close:hover { color: var(--text); }
+        .discord-popup h4 { font-size: 20px; margin-bottom: 8px; color: var(--text); }
+        .discord-popup p { font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+        .btn-discord-small { display: block; width: 100%; padding: 12px 0; background: var(--discord); color: white; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 14px; transition: background 0.2s; }
+        .btn-discord-small:hover { background: var(--discord-hover); }
+
+    </style>
 </head>
 <body>
-    <!-- Interactive Background -->
-    <canvas id="bg-canvas"></canvas>
 
-    <nav class="navbar">
-        <div class="logo">Oryx<span>Swapper</span></div>
-        <ul class="nav-links">
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#how-it-works">Tutorial</a></li>
-            <li><a href="docs.html">Documentation</a></li>
-            <li><a href="https://discord.gg/qmM2FhSGq7" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
-        </ul>
-        <a href="#download" class="btn btn-outline nav-btn">Download Now</a>
+    <nav>
+        <a href="index.html" class="logo">Oryx Swapper</a>
+        <div class="nav-links">
+            <a href="#metrics">Features</a>
+            <a href="#catalog">Database</a>
+            <a href="#changelog">Changelog</a>
+            <a href="docs.html">Documentation</a>
+        </div>
     </nav>
 
-    <main class="container">
+    <!-- HERO -->
+    <section class="hero reveal">
+        <!-- Live Status Pill (Aggiornato v1.0.3) -->
+        <a href="#changelog" class="status-pill reveal">
+            <span class="pulse-dot"></span>
+            Status: Undetected
+            <span class="status-version">— v1.0.3</span>
+        </a>
+
+        <h1 class="text-gradient">Beyond the garage.</h1>
+        <p>The most advanced client-side infrastructure for Rocket League. Visually modify every aspect of your car with zero latency and zero risks.</p>
+        <div style="margin-bottom: 20px;">
+            <!-- LINK AGGIORNATO AL NUOVO DISCORD CDN E v1.0.3 -->
+            <a href="https://cdn.discordapp.com/attachments/1502371174368280660/1509319584463720598/OryxSwapperSetup.exe?ex=6a1967a6&is=6a181626&hm=fa2ce85a093b9d48923f73d38f4bb7b2b116b4e606675a5cd0791b5bf12e8f19&" class="btn-primary">Download v1.0.3 for Windows</a>
+            <a href="docs.html" class="btn-secondary">Read the Docs</a>
+        </div>
         
-        <!-- SECTION 1: HERO -->
-        <section id="hero" class="panel hero">
-            <div class="hero-content">
-                <div class="badge fade-up">🚀 Onyx Engine v1.0.0 Online</div>
-                <h1 class="fade-up">The Ultimate Experience,<br><span class="text-gradient">Unlocked.</span></h1>
-                <p class="fade-up">Explore the most advanced client-side modifier ever created for Rocket League. Visually replace any asset with a single click, with native support for all graphical variants.</p>
-                <div class="hero-buttons fade-up">
-                    <a href="#download" class="btn btn-primary btn-glow">
-                        <span class="btn-text">Download for Windows</span>
-                    </a>
-                    <a href="#features" class="btn btn-secondary">Discover the Magic</a>
-                </div>
-            </div>
-            
-            <div class="scroll-indicator">
-                <span>Scroll to discover</span>
-                <div class="mouse">
-                    <div class="wheel"></div>
-                </div>
-            </div>
-        </section>
+        <!-- VIDEO SHOWCASE (NATIVE MP4) -->
+        <div class="video-wrapper reveal delay-1">
+            <video autoplay loop muted playsinline>
+                <source src="showcase.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+    </section>
 
-        <!-- SECTION 2: FEATURES -->
-        <section id="features" class="panel features">
-            <div class="section-title fade-up">
-                <h2>Next-Generation <span class="text-gradient">Technology</span></h2>
-                <p>No compromises. The safest and smartest software architecture.</p>
+    <!-- METRICS / STATS -->
+    <section id="metrics">
+        <div class="stats-grid reveal">
+            <div class="stat-item">
+                <h4 class="text-gradient">0ms</h4>
+                <p>Added Latency</p>
             </div>
-            <div class="grid">
-                <div class="card glass tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.2">
-                    <div class="icon-wrap"><div class="icon">✨</div></div>
-                    <h3>Smart Swap Engine</h3>
-                    <p>Revolutionary algorithm that simultaneously detects and swaps all textures and color variants. Guaranteed perfect rendering in every match.</p>
-                </div>
-                <div class="card glass tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.2">
-                    <div class="icon-wrap"><div class="icon">🛡️</div></div>
-                    <h3>100% Client-Side Safe</h3>
-                    <p>Completely invisible to game servers and other players. No risk, no memory injection. Pure local visual modding.</p>
-                </div>
-                <div class="card glass tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.2">
-                    <div class="icon-wrap"><div class="icon">⏪</div></div>
-                    <h3>Time-Travel Revert</h3>
-                    <p>An imperceptible background auto-backup system. Click a button to time-travel and revert the game to its original state in 0.1 seconds.</p>
-                </div>
+            <div class="stat-item delay-1">
+                <h4 class="text-gradient">15k+</h4>
+                <p>Unlocked Items</p>
             </div>
-        </section>
+            <div class="stat-item delay-2">
+                <h4 class="text-gradient">100%</h4>
+                <p>Client-Side Safe</p>
+            </div>
+        </div>
+        
+        <span class="tag reveal">Workflow</span>
+        <h2 class="text-gradient reveal">Engineered for fluidity.</h2>
+        <p class="section-desc reveal">A lightweight architecture that runs in the background without impacting your game's framerate.</p>
 
-        <!-- SECTION 3: HOW IT WORKS -->
-        <section id="how-it-works" class="panel how-it-works">
-            <div class="section-title fade-up">
-                <h2>Just <span class="text-gradient">one click.</span></h2>
-                <p>Designed to be so easy, you won't need a guide.</p>
+        <div class="bento-grid">
+            <div class="card reveal">
+                <h3>Silent Injection</h3>
+                <p>No restart required. Oryx hooks into the Rocket League process in the background, applying modifications instantly without dropping your FPS.</p>
             </div>
-            
-            <div class="step-container">
-                <div class="interactive-step fade-up">
-                    <div class="step-circle">1</div>
-                    <div class="step-content">
-                        <h3>Configure Target</h3>
-                        <p>Select the base item present in your local inventory.</p>
-                    </div>
-                </div>
-                <div class="step-connector"></div>
-                <div class="interactive-step fade-up" style="transition-delay: 0.2s">
-                    <div class="step-circle">2</div>
-                    <div class="step-content">
-                        <h3>Choose Asset</h3>
-                        <p>Select the desired visual variant from the library (e.g., Alpha Boost).</p>
-                    </div>
-                </div>
-                <div class="step-connector"></div>
-                <div class="interactive-step fade-up" style="transition-delay: 0.4s">
-                    <div class="step-circle">3</div>
-                    <div class="step-content">
-                        <h3>Apply and Play</h3>
-                        <p>Inject the configuration. The engine will process the files and you'll be ready for action.</p>
-                    </div>
-                </div>
+            <div class="card reveal delay-1">
+                <h3>Cloud Synchronization</h3>
+                <p>The entire item database is automatically updated. When a new patch drops, the newest items are already in your catalog ready to be equipped.</p>
             </div>
-        </section>
+            <div class="card reveal delay-2">
+                <h3>Zero Installation</h3>
+                <p>No bloatware, no complex installers. A single 10MB portable executable that does exactly what it promises, without cluttering your system registry.</p>
+            </div>
+        </div>
+    </section>
 
-        <!-- SECTION 3.5: INFO / TECH STACK -->
-        <section id="info" class="panel info-section">
-            <div class="section-title fade-up">
-                <h2>Behind the <span class="text-gradient">Scenes</span></h2>
-                <p>How we engineered visual perfection.</p>
-            </div>
-            
-            <div class="info-content fade-up">
-                <div class="info-text glass">
-                    <h3>System Architecture</h3>
-                    <p>Oryx Swapper is built on solid foundations. We developed the user interface leveraging <strong>Electron</strong> and the most modern web technologies (HTML, CSS, and Node.js) to offer you a responsive and fluid design.</p>
-                    <p>But the real beating heart is our engine written in <strong>Python</strong>. This script analyzes, injects, and manipulates <code>.upk</code> (Unreal Package) files in real-time, decrypting Rocket League signatures and re-encrypting the files in a fraction of a second.</p>
-                    <div class="tech-tags">
-                        <span class="tag">Electron JS</span>
-                        <span class="tag">Node.js</span>
-                        <span class="tag">Python 3</span>
-                        <span class="tag">Unreal Engine 3</span>
-                    </div>
+    <!-- THE CATALOG / ARSENAL -->
+    <section id="catalog">
+        <span class="tag reveal">The Database</span>
+        <h2 class="text-gradient reveal">Everything unlocked.<br>From day one.</h2>
+        <p class="section-desc reveal">Forget trading. Get instant access to the entire Rocket League cosmetic archive, including exclusive, unobtainable items.</p>
+
+        <div class="bento-asym">
+            <div class="card reveal" style="background: linear-gradient(145deg, #0a0a0a 0%, #111 100%); border-color: #333;">
+                <h3 style="font-size: 32px; margin-bottom: 20px;">The Elite Tier</h3>
+                <p style="font-size: 18px; margin-bottom: 30px;">Instantly equip the <strong>Alpha Boost (Gold Rush)</strong>, Goldstone wheels, or the NRG Esports decal. Build the pro-player preset without spending a dime.</p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span style="padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 100px; font-size: 13px;">Titanium White Octane</span>
+                    <span style="padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 100px; font-size: 13px;">Black Dieci</span>
+                    <span style="padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 100px; font-size: 13px;">Alpha Reward</span>
                 </div>
+            </div>
+            <div class="card reveal delay-1">
+                <h3>Black Markets</h3>
+                <p>Override any base decal with the rarest animated designs. Fully rendered at the highest resolution without performance hits.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section id="security" style="text-align: center; padding: 150px 5vw;">
+        <span class="tag reveal" style="margin: 0 auto 16px;">Anti-Cheat Security</span>
+        <h2 class="text-gradient reveal" style="font-size: clamp(36px, 6vw, 64px);">Zero-Risk Architecture.</h2>
+        <p class="section-desc reveal" style="margin: 0 auto; font-size: 20px;">
+            Oryx does not manipulate any network packets sent to Psyonix/Epic Games servers. 
+            The software simply redirects visual pointers in your GPU's local memory. 
+            <strong>Result: it is impossible to get banned.</strong>
+        </p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <span class="tag reveal">FAQ</span>
+        <h2 class="text-gradient reveal">Frequently asked questions.</h2>
+        
+        <div style="max-width: 800px; margin-top: 40px;">
+            <div class="faq-item reveal">
+                <h4>Can other players see my items?</h4>
+                <p>No. The modifications are 100% Client-Side. This means the modified car is only visible on your screen, guaranteeing your account's safety regarding other players and the server.</p>
+            </div>
+            <div class="faq-item reveal">
+                <h4>Does it work with BakkesMod?</h4>
+                <p>We currently recommend disabling BakkesMod's "ItemMod" feature when using Oryx to prevent both programs from trying to write to the same visual memory segment simultaneously.</p>
+            </div>
+            <div class="faq-item reveal">
+                <h4>Why is my antivirus blocking the download?</h4>
+                <p>Programs that "hook" into other processes (like Oryx does with Rocket League) are often flagged as false positives by basic heuristics like Windows Defender. The code is 100% clean and safe.</p>
+            </div>
+        </div>
+        <p class="reveal" style="margin-top: 30px;"><a href="docs.html" style="color: var(--accent); text-decoration: none; font-weight: 500;">Read the full documentation &rarr;</a></p>
+    </section>
+
+    <!-- CHANGELOG (Aggiornato v1.0.3) -->
+    <section id="changelog" style="padding-top: 80px;">
+        <span class="tag reveal">Updates</span>
+        <h2 class="text-gradient reveal">Changelog.</h2>
+        <p class="section-desc reveal" style="margin-bottom: 20px;">Track the latest improvements, patches, and features added to Oryx.</p>
+        
+        <div class="changelog-box reveal">
+            <!-- v1.0.3 -->
+            <div class="changelog-item">
+                <div class="changelog-version">v1.0.3 <span class="changelog-date">May 2026</span> <span class="changelog-tag">Latest</span></div>
                 
-                <div class="info-visual">
-                    <div class="code-window glass tilt-card" data-tilt data-tilt-max="10" data-tilt-glare data-tilt-max-glare="0.3">
-                        <div class="window-header">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                            <div class="window-title">swapper_engine.py</div>
-                        </div>
-                        <div class="window-body">
-<pre><code><span class="keyword">def</span> <span class="function">swap_asset</span>(target, donor):
-    <span class="comment"># Initialize decryption key</span>
-    key = get_package_key(target)
-    
-    <span class="comment"># Deep injection</span>
-    inject_textures(target_files, donor)
-    
-    <span class="keyword">return</span> <span class="string">"Swap Successful! 🚀"</span></code></pre>
-                        </div>
-                    </div>
+                <div style="margin-top: 16px;">
+                    <strong style="color: var(--text); font-size: 14px;">✨ Added & Improved</strong>
+                    <ul class="changelog-list" style="margin-bottom: 20px;">
+                        <li>ZIP validation for custom ball and decal packs.</li>
+                        <li>In-app update notes inside the Updates and Settings pages.</li>
+                        <li>Dynamic wrapping for long notifications, preventing text cut-offs.</li>
+                        <li>Advanced manifest support for changelogs and update fields.</li>
+                    </ul>
+                    
+                    <strong style="color: var(--text); font-size: 14px;">🔧 Fixed & Updated</strong>
+                    <ul class="changelog-list">
+                        <li>Fixed custom decal packs being blocked by incorrect SkinID metadata.</li>
+                        <li>Custom decals now always successfully apply to the "None / No Decal" slot.</li>
+                        <li>Rebuilt the setup installer with the latest core fixes.</li>
+                    </ul>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SECTION 4: DOWNLOAD -->
-        <section id="download" class="panel download-section">
-            <div class="download-card glass fade-up">
-                <h2>Ready to start?</h2>
-                <p>Download the official client and expand your game's potential.</p>
-                <div class="dl-wrapper">
-                    <a href="https://cdn.discordapp.com/attachments/1503404383185141761/1507364838391812146/Oryx_Swapper_Setup_1.0.0.exe?ex=6a11a266&is=6a1050e6&hm=56415118b732827541b1ead32123b535038d18fc29cb6e377c3b85eed4216bf5&" class="btn btn-primary large-btn download-btn">
-                        <svg class="dl-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        Download Oryx Swapper
-                    </a>
-                </div>
-                <div class="sys-req">
-                    <span><svg fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg> Windows 10/11</span>
-                    <span><svg fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg> Epic Games (Rocket League)</span>
-                    <span><svg fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg> Auto-Updating</span>
-                </div>
-            </div>
-        </section>
+    <!-- DOWNLOAD -->
+    <section id="download" style="text-align: center; padding-top: 80px; padding-bottom: 120px; border-bottom: none;">
+        <h2 class="text-gradient reveal">Ready to deploy?</h2>
+        <p class="reveal" style="color: var(--muted); margin-bottom: 40px;">Download the latest stable release. No installation required.</p>
+        <div class="reveal">
+            <!-- LINK AGGIORNATO AL NUOVO DISCORD CDN E v1.0.3 -->
+            <a href="https://cdn.discordapp.com/attachments/1502371174368280660/1509319584463720598/OryxSwapperSetup.exe?ex=6a1967a6&is=6a181626&hm=fa2ce85a093b9d48923f73d38f4bb7b2b116b4e606675a5cd0791b5bf12e8f19&" class="btn-primary" style="padding: 20px 48px; font-size: 18px; margin-bottom: 20px;">Download v1.0.3 for Windows</a>
+        </div>
+    </section>
 
-    </main>
-
+    <!-- FOOTER -->
     <footer>
-        <div class="footer-logo">Oryx<span>Swapper</span></div>
-        <p>Created by <strong>Oryx</strong>. Not affiliated with Psyonix or Epic Games.</p>
-        <div class="footer-links">
-            <a href="https://discord.gg/qmM2FhSGq7" target="_blank" rel="noopener noreferrer">Community Discord Server</a>
+        <div>Oryx Swapper &copy; 2026. Engineered for performance.</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="docs.html" style="color: var(--muted); text-decoration: none;">Documentation</a>
         </div>
     </footer>
+
+    <!-- DISCORD FLOATING BUTTON -->
+    <div class="discord-fab" onclick="toggleDiscordPopup()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor">
+            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.2,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+    </div>
+
+    <!-- DISCORD POPUP ANIMATO -->
+    <div class="discord-popup" id="discordPopup">
+        <button class="discord-popup-close" onclick="toggleDiscordPopup()">✖</button>
+        <h4>Need Support?</h4>
+        <p>Join our Discord community to chat, get technical help, and see the latest updates.</p>
+        <a href="https://discord.gg/bWQGST8vEH" target="_blank" class="btn-discord-small">Join the Server</a>
+    </div>
 
     <!-- COOKIE BANNER -->
     <div id="cookie-banner" class="cookie-banner">
         <div class="cookie-text">
-            <strong>Cookie Policy:</strong> We use essential technical cookies to offer you the best experience on the site. By continuing to browse, you consent to their use.
+            <strong>We respect your privacy</strong>
+            <p>We use cookies to improve your browsing experience and analyze traffic. No data is sold to third parties.</p>
         </div>
-        <button id="accept-cookies" class="cookie-btn">Accept & Close</button>
+        <div class="cookie-buttons">
+            <button class="btn-cookie btn-cookie-accept" onclick="handleCookie(true)">Accept All</button>
+            <button class="btn-cookie btn-cookie-reject" onclick="handleCookie(false)">Reject</button>
+        </div>
     </div>
 
-    <!-- Scripts per animazioni e interattività -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-    <script src="script.js"></script>
+    <!-- Script Animations, Cookies & Discord Popup -->
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); 
+
+        function handleCookie(accepted) {
+            const banner = document.getElementById('cookie-banner');
+            banner.classList.add('hidden');
+        }
+
+        // Logic for Discord Popup
+        function toggleDiscordPopup() {
+            const popup = document.getElementById('discordPopup');
+            popup.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
